@@ -13,41 +13,43 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-var Vehicle = /** @class */ (function () {
-    function Vehicle(name, speed, id) {
-        this.name = name;
-        this.speed = speed;
-        this.id = id;
+var Job = /** @class */ (function () {
+    function Job(type) {
+        this.type = type;
     }
-    Vehicle.prototype.slowDown = function (amount) {
-        this.speed -= amount;
-        if (this.speed < 0)
-            this.speed = 0;
+    // Method thông thường
+    Job.prototype.printType = function () {
+        console.log("Lo\u1EA1i c\u00F4ng vi\u1EC7c: ".concat(this.type));
     };
-    Vehicle.prototype.speedUp = function (amount) {
-        this.speed += amount;
-    };
-    Vehicle.prototype.showSpeed = function () {
-        console.log("T\u1ED1c \u0111\u1ED9 hi\u1EC7n t\u1EA1i c\u1EE7a ".concat(this.name, ": ").concat(this.speed, " km/h"));
-    };
-    return Vehicle;
+    return Job;
 }());
-var Bicycle = /** @class */ (function (_super) {
-    __extends(Bicycle, _super);
-    function Bicycle(name, speed, id, gear) {
-        var _this = _super.call(this, name, speed, id) || this;
-        _this.gear = gear;
+var ParttimeJob = /** @class */ (function (_super) {
+    __extends(ParttimeJob, _super);
+    function ParttimeJob(type, workingHour) {
+        var _this = _super.call(this, type) || this;
+        _this.workingHour = workingHour;
         return _this;
     }
-    Bicycle.prototype.showInfo = function () {
-        console.log("Xe \u0111\u1EA1p: ".concat(this.name, ", ID: ").concat(this.id, ", S\u1ED1 b\u00E1nh r\u0103ng: ").concat(this.gear));
-        this.showSpeed();
+    // Bắt buộc implement abstract method
+    ParttimeJob.prototype.calculateSalary = function () {
+        return 30000 * this.workingHour;
     };
-    return Bicycle;
-}(Vehicle));
-var bike = new Bicycle("Xe đạp thể thao", 10, 1, 6);
-bike.showInfo();
-bike.speedUp(5);
-bike.showSpeed();
-bike.slowDown(8);
-bike.showSpeed();
+    return ParttimeJob;
+}(Job));
+var FulltimeJob = /** @class */ (function (_super) {
+    __extends(FulltimeJob, _super);
+    function FulltimeJob(type) {
+        return _super.call(this, type) || this;
+    }
+    FulltimeJob.prototype.calculateSalary = function () {
+        return 10000000;
+    };
+    return FulltimeJob;
+}(Job));
+// Test
+var parttime = new ParttimeJob("Part-time", 80);
+var fulltime = new FulltimeJob("Full-time");
+parttime.printType(); // method thường
+console.log("Lương:", parttime.calculateSalary()); // abstract method
+fulltime.printType();
+console.log("Lương:", fulltime.calculateSalary());

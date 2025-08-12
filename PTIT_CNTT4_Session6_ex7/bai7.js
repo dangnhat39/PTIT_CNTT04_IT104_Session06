@@ -1,63 +1,93 @@
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = function (d, b) {
-        extendStatics = Object.setPrototypeOf ||
-            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
-        return extendStatics(d, b);
-    };
-    return function (d, b) {
-        if (typeof b !== "function" && b !== null)
-            throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-var Account = /** @class */ (function () {
-    function Account(accountNumber, initialBalance) {
-        this.accountNumber = accountNumber;
-        this.balance = initialBalance;
-        this.history = [];
-        this.status = "active";
+var Student = /** @class */ (function () {
+    function Student(id, name) {
+        this.id = id;
+        this.name = name;
     }
-    Account.prototype.deposit = function (amount) {
-        if (amount > 0) {
-            this.balance += amount;
-            this.history.push("N\u1EA1p ".concat(amount, " VND - S\u1ED1 d\u01B0: ").concat(this.balance));
-        }
+    Student.prototype.getId = function () {
+        return this.id;
     };
-    Account.prototype.withdraw = function (amount) {
-        if (amount > 0 && amount <= this.balance) {
-            this.balance -= amount;
-            this.history.push("R\u00FAt ".concat(amount, " VND - S\u1ED1 d\u01B0: ").concat(this.balance));
-        }
+    Student.prototype.getName = function () {
+        return this.name;
     };
-    Account.prototype.showHistory = function () {
-        console.log("L\u1ECBch s\u1EED giao d\u1ECBch t\u00E0i kho\u1EA3n ".concat(this.accountNumber, ":"));
-        this.history.forEach(function (h) { return console.log(h); });
+    Student.prototype.setName = function (newName) {
+        this.name = newName;
     };
-    return Account;
+    return Student;
 }());
-var SavingAccount = /** @class */ (function (_super) {
-    __extends(SavingAccount, _super);
-    function SavingAccount(accountNumber, initialBalance, interestRate) {
-        var _this = _super.call(this, accountNumber, initialBalance) || this;
-        _this.interestRate = interestRate;
-        return _this;
+var allStudents = [];
+var Classroom = /** @class */ (function () {
+    function Classroom(className) {
+        this.className = className;
+        this.students = [];
     }
-    SavingAccount.prototype.withdraw = function (amount) {
-        if (amount > 0 && amount <= this.balance) {
-            this.balance -= amount;
-            if (this.balance < 0)
-                this.balance = 0;
-            this.history.push("R\u00FAt ".concat(amount, " VND - S\u1ED1 d\u01B0: ").concat(this.balance));
+    Classroom.prototype.showStudents = function () {
+        console.log("Danh s\u00E1ch h\u1ECDc sinh l\u1EDBp ".concat(this.className, ":"));
+        this.students.forEach(function (s) {
+            console.log("ID: ".concat(s.getId(), " - Name: ").concat(s.getName()));
+        });
+        if (this.students.length === 0) {
+            console.log("Không có học sinh nào trong lớp.");
+        }
+        console.log("----------------------");
+    };
+    Classroom.prototype.addStudent = function (student) {
+        this.students.push(student);
+    };
+    Classroom.prototype.filterStudent = function (id) {
+        return this.students.find(function (s) { return s.getId() === id; });
+    };
+    Classroom.prototype.addStudentInClass = function (id) {
+        var index = allStudents.findIndex(function (s) { return s.getId() === id; });
+        if (index !== -1) {
+            this.students.push(allStudents[index]);
+            allStudents.splice(index, 1);
+        }
+        else {
+            console.log("Không tìm thấy học sinh trong danh sách tất cả học sinh.");
         }
     };
-    return SavingAccount;
-}(Account));
-// --- Test ---
-var acc1 = new SavingAccount("123456789", 1000000, 0.05);
-acc1.deposit(500000);
-acc1.withdraw(300000);
-acc1.withdraw(1500000);
-acc1.showHistory();
+    Classroom.prototype.removeStudent = function (id) {
+        var index = this.students.findIndex(function (s) { return s.getId() === id; });
+        if (index !== -1) {
+            allStudents.push(this.students[index]);
+            this.students.splice(index, 1);
+            console.log("\u0110\u00E3 x\u00F3a h\u1ECDc sinh ID ".concat(id, " kh\u1ECFi l\u1EDBp ").concat(this.className));
+        }
+        else {
+            console.log("Không tìm thấy học sinh trong lớp.");
+        }
+    };
+    Classroom.prototype.editStudent = function (id, newName) {
+        var student = this.students.find(function (s) { return s.getId() === id; });
+        if (student) {
+            student.setName(newName);
+            console.log("\u0110\u00E3 \u0111\u1ED5i t\u00EAn h\u1ECDc sinh ID ".concat(id, " th\u00E0nh ").concat(newName));
+        }
+        else {
+            console.log("Không tìm thấy học sinh trong lớp.");
+        }
+    };
+    return Classroom;
+}());
+var s1 = new Student(1, "An");
+var s2 = new Student(2, "Bình");
+var s3 = new Student(3, "Cường");
+var s4 = new Student(4, "Dũng");
+var s5 = new Student(5, "Hà");
+var s6 = new Student(6, "Lan");
+allStudents.push(s1, s2, s3, s4, s5, s6);
+var classA = new Classroom("A");
+var classB = new Classroom("B");
+classA.addStudentInClass(1);
+classA.addStudentInClass(2);
+classA.addStudentInClass(3);
+classB.addStudentInClass(4);
+classB.addStudentInClass(5);
+classB.addStudentInClass(6);
+classA.showStudents();
+classB.showStudents();
+classA.removeStudent(2);
+classA.showStudents();
+console.log("Tất cả học sinh còn lại ngoài lớp:", allStudents.map(function (s) { return s.getName(); }));
+classB.editStudent(4, "Dũng Pro");
+classB.showStudents();

@@ -1,49 +1,33 @@
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = function (d, b) {
-        extendStatics = Object.setPrototypeOf ||
-            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
-        return extendStatics(d, b);
-    };
-    return function (d, b) {
-        if (typeof b !== "function" && b !== null)
-            throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-var Person = /** @class */ (function () {
-    function Person(name) {
-        this.name = name;
+var Circle = /** @class */ (function () {
+    function Circle(radius) {
+        this.radius = radius;
     }
-    return Person;
+    Circle.prototype.calculateArea = function () {
+        return Math.PI * this.radius * this.radius;
+    };
+    Circle.prototype.calculatePerimeter = function () {
+        return 2 * Math.PI * this.radius;
+    };
+    return Circle;
 }());
-var Student = /** @class */ (function (_super) {
-    __extends(Student, _super);
-    function Student(name, id) {
-        var _this = _super.call(this, name) || this;
-        _this.id = id;
-        return _this;
+var Rectangle = /** @class */ (function () {
+    function Rectangle(width, height) {
+        this.width = width;
+        this.height = height;
     }
-    Student.prototype.displayInfo = function () {
-        console.log("Sinh vi\u00EAn: ".concat(this.name, ", ID: ").concat(this.id));
+    Rectangle.prototype.calculateArea = function () {
+        return this.width * this.height;
     };
-    return Student;
-}(Person));
-var Teacher = /** @class */ (function (_super) {
-    __extends(Teacher, _super);
-    function Teacher(name, subject) {
-        var _this = _super.call(this, name) || this;
-        _this.subject = subject;
-        return _this;
-    }
-    Teacher.prototype.displayInfo = function () {
-        console.log("Gi\u00E1o vi\u00EAn: ".concat(this.name, ", M\u00F4n: ").concat(this.subject));
+    Rectangle.prototype.calculatePerimeter = function () {
+        return 2 * (this.width + this.height);
     };
-    return Teacher;
-}(Person));
-var student = new Student("Nguyễn Văn A", 101);
-student.displayInfo();
-var teacher = new Teacher("Trần Văn B", "Toán");
-teacher.displayInfo();
+    return Rectangle;
+}());
+var myCircle = new Circle(5);
+console.log("Hình tròn:");
+console.log("Diện tích:", myCircle.calculateArea().toFixed(2));
+console.log("Chu vi:", myCircle.calculatePerimeter().toFixed(2));
+var myRectangle = new Rectangle(4, 6);
+console.log("\nHình chữ nhật:");
+console.log("Diện tích:", myRectangle.calculateArea());
+console.log("Chu vi:", myRectangle.calculatePerimeter());

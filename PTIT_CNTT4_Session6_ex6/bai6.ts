@@ -1,71 +1,81 @@
-class Account {
-    protected id: number;
-    protected userName: string;
-    protected password: string;
-    protected isLogin: boolean;
-    protected role: string;
+class Student {
+    private id: number;
+    private name: string;
 
-    constructor(id: number, userName: string, password: string, role: string) {
+    constructor(id: number, name: string) {
         this.id = id;
-        this.userName = userName;
-        this.password = password;
-        this.isLogin = false;
-        this.role = role;
+        this.name = name;
     }
 
-    public login(userName: string, password: string): void {
-        if (this.userName === userName && this.password === password) {
-            this.isLogin = true;
-            console.log(`${this.userName} đăng nhập thành công!`);
+    getId(): number {
+        return this.id;
+    }
+
+    getName(): string {
+        return this.name;
+    }
+}
+
+let allStudents: Student[] = [];
+
+class Classroom {
+    private students: Student[] = [];
+
+    showStudents(): void {
+        if (this.students.length === 0) {
+            console.log("Lớp chưa có học sinh.");
         } else {
-            console.log("Sai tài khoản hoặc mật khẩu!");
+            console.log("Danh sách học sinh:");
+            this.students.forEach(stu => {
+                console.log(`ID: ${stu.getId()}, Name: ${stu.getName()}`);
+            });
         }
     }
 
-    public logout(): void {
-        if (this.isLogin) {
-            this.isLogin = false;
-            console.log(`${this.userName} đã đăng xuất!`);
+    addStudent(student: Student): void {
+        this.students.push(student);
+    }
+
+    filterStudent(id: number): Student[] {
+        return this.students.filter(stu => stu.getId() === id);
+    }
+
+    addStudentInClass(id: number): void {
+        const index = allStudents.findIndex(stu => stu.getId() === id);
+        if (index !== -1) {
+            this.students.push(allStudents[index]);
+            allStudents.splice(index, 1);
+        } else {
+            console.log(`Không tìm thấy học sinh ID ${id} trong danh sách tất cả học sinh.`);
         }
     }
 }
 
-class userAcc extends Account {
-    private status: string;
+allStudents.push(
+    new Student(1, "An"),
+    new Student(2, "Bình"),
+    new Student(3, "Cường"),
+    new Student(4, "Dũng"),
+    new Student(5, "Hà"),
+    new Student(6, "Lan")
+);
 
-    constructor(id: number, userName: string, password: string, role: string, status: string) {
-        super(id, userName, password, role);
-        this.status = status;
-    }
+const classA = new Classroom();
+const classB = new Classroom();
 
-    public login(userName: string, password: string): void {
-        if (this.status === "active") {
-            super.login(userName, password);
-        } else if (this.status === "banned") {
-            console.log(`Tài khoản ${this.userName} đã bị khóa!`);
-        }
-    }
+classA.addStudentInClass(1);
+classA.addStudentInClass(2);
+classA.addStudentInClass(3);
 
-    public setStatus(newStatus: string): void {
-        this.status = newStatus;
-    }
+classB.addStudentInClass(4);
+classB.addStudentInClass(5);
+classB.addStudentInClass(6);
 
-    public getStatus(): string {
-        return this.status;
-    }
-}
+console.log("Lớp A:");
+classA.showStudents();
 
-class adminAcc extends Account {
-    public banUser(user: userAcc): void {
-        user.setStatus("banned");
-        console.log(`Tài khoản ${user['userName']} đã bị admin khóa!`);
-    }
-}
+console.log("\nLớp B:");
+classB.showStudents();
 
-// --- Test ---
-const user1 = new userAcc(1, "vinh", "123456", "user", "active");
-const admin1 = new adminAcc(99, "admin", "admin123", "admin");
-
-user1.login("vinh", "123456");
-admin1.banUser(user1);
-user1.login("vinh", "123456");
+console.log("\nDanh sách học sinh còn lại:");
+console.log(allStudents);

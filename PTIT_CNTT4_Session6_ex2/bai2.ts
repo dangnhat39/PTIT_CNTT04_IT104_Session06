@@ -1,45 +1,45 @@
-class Vehicle {
-    protected name: string;
-    protected speed: number;
-    protected id: number;
+abstract class Job {
+    protected type: string;
 
-    constructor(name: string, speed: number, id: number) {
-        this.name = name;
-        this.speed = speed;
-        this.id = id;
+    constructor(type: string) {
+        this.type = type;
     }
 
-    public slowDown(amount: number): void {
-        this.speed -= amount;
-        if (this.speed < 0) this.speed = 0;
+    printType(): void {
+        console.log(`Loại công việc: ${this.type}`);
     }
 
-    public speedUp(amount: number): void {
-        this.speed += amount;
+    abstract calculateSalary(): number;
+}
+
+class ParttimeJob extends Job {
+    private workingHour: number;
+
+    constructor(type: string, workingHour: number) {
+        super(type);
+        this.workingHour = workingHour;
     }
 
-    public showSpeed(): void {
-        console.log(`Tốc độ hiện tại của ${this.name}: ${this.speed} km/h`);
+    calculateSalary(): number {
+        return 30000 * this.workingHour;
     }
 }
 
-class Bicycle extends Vehicle {
-    private gear: number;
-
-    constructor(name: string, speed: number, id: number, gear: number) {
-        super(name, speed, id);
-        this.gear = gear;
+class FulltimeJob extends Job {
+    constructor(type: string) {
+        super(type);
     }
 
-    public showInfo(): void {
-        console.log(`Xe đạp: ${this.name}, ID: ${this.id}, Số bánh răng: ${this.gear}`);
-        this.showSpeed();
+    calculateSalary(): number {
+        return 10000000;
     }
 }
 
-const bike = new Bicycle("Xe đạp thể thao", 10, 1, 6);
-bike.showInfo();
-bike.speedUp(5);
-bike.showSpeed();
-bike.slowDown(8);
-bike.showSpeed();
+const parttime = new ParttimeJob("Part-time", 80);
+const fulltime = new FulltimeJob("Full-time");
+
+parttime.printType();
+console.log("Lương:", parttime.calculateSalary());
+
+fulltime.printType();
+console.log("Lương:", fulltime.calculateSalary());

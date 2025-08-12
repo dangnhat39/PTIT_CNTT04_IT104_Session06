@@ -13,38 +13,28 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-var Employee = /** @class */ (function () {
-    function Employee(name, company, phone) {
+var Shape = /** @class */ (function () {
+    function Shape(name) {
         this.name = name;
-        this.company = company;
-        this.phone = phone;
     }
-    Employee.prototype.printInfo = function () {
-        console.log("T\u00EAn: ".concat(this.name));
-        console.log("C\u00F4ng ty: ".concat(this.company));
-        console.log("S\u0110T: ".concat(this.phone));
+    Shape.prototype.getName = function () {
+        return this.name;
     };
-    return Employee;
+    return Shape;
 }());
-var Manager = /** @class */ (function (_super) {
-    __extends(Manager, _super);
-    function Manager(name, company, phone, teamSize) {
-        var _this = _super.call(this, name, company, phone) || this;
-        _this.teamSize = teamSize;
+var Rectangle = /** @class */ (function (_super) {
+    __extends(Rectangle, _super);
+    function Rectangle(name, width, height) {
+        var _this = _super.call(this, name) || this;
+        _this.width = width;
+        _this.height = height;
         return _this;
     }
-    Manager.prototype.printInfo = function () {
-        _super.prototype.printInfo.call(this);
-        console.log("Qu\u1EA3n l\u00FD nh\u00F3m: ".concat(this.teamSize, " ng\u01B0\u1EDDi"));
+    Rectangle.prototype.getSize = function () {
+        console.log("Chi\u1EC1u r\u1ED9ng: ".concat(this.width, ", Chi\u1EC1u cao: ").concat(this.height));
     };
-    Manager.prototype.getCompanyName = function () {
-        return this.company;
-    };
-    return Manager;
-}(Employee));
-var emp = new Employee("Nguyễn Văn A", "FPT Software", "0909 123 456");
-emp.printInfo();
-console.log("----------");
-var manager = new Manager("Trần Văn B", "VNG", "0912 456 789", 10);
-manager.printInfo();
-console.log("Tên công ty của Manager:", manager.getCompanyName());
+    return Rectangle;
+}(Shape));
+var rectangle = new Rectangle("Hình chữ nhật", 10, 5);
+console.log("Tên hình:", rectangle.getName());
+rectangle.getSize();
